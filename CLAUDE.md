@@ -13,6 +13,12 @@ CLAUDE.md).
   the narrowest resource it needs (mirror the Business Central "Sales,
   read-only" pattern). Write scope is a deliberate, documented upgrade in
   that connector's doc under `docs/connectors/`, not a default.
+- **Non-production first.** Every new connector points at a staging/sandbox
+  environment by default, never the live/production instance, until its
+  connector doc records an explicit, reviewed decision to point at
+  production. Name env vars and MCP server keys so the target environment
+  is unambiguous (e.g. `SHOPIFY_STAGING_STOREFRONT_MCP_URL`, not a bare
+  `SHOPIFY_STOREFRONT_MCP_URL` that could silently mean either).
 - **No real credentials in the repo.** `.env` is gitignored. `.mcp.json`
   only ever references environment variables (`${VAR_NAME}`), never literal
   keys, tokens, or tenant IDs. If you ever see a real secret about to be
