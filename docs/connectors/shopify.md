@@ -27,11 +27,25 @@ in `.env` is just the staging store's well-known endpoint — the env var
 name is deliberately explicit about "staging" so it can't be confused with
 a production URL at a glance.
 
+## Staging store
+
+Confirmed: `staging-furniturebox-uk` (myshopify domain
+`staging-furniturebox-uk.myshopify.com`), per the Shopify admin URL
+`https://admin.shopify.com/store/staging-furniturebox-uk/orders`. Storefront
+MCP endpoint is therefore
+`https://staging-furniturebox-uk.myshopify.com/.well-known/mcp/storefront`,
+set locally as `SHOPIFY_STAGING_STOREFRONT_MCP_URL` in `.env` (gitignored,
+not committed).
+
+**Not yet verified:** whether that endpoint actually responds (i.e. the
+staging store is on Shopify Plus with Storefront MCP enabled). A check from
+this session was blocked by the environment's network egress policy
+(`*.myshopify.com` not in the allowed hosts) — needs either that host
+allowed in the environment's network settings, or a manual check from
+somewhere with access.
+
 ## Open questions
 
-- **Blocking:** what is the staging store's myshopify domain? Needed before
-  this connector can be wired up at all — not guessing this, has to come
-  from whoever owns the Shopify staging environment.
 - Confirm the staging store is on Shopify Plus (Storefront MCP default-on
   requirement) — staging tier doesn't always mirror production tier.
 - Confirm our (production) store is on Shopify Plus too, since that's what
