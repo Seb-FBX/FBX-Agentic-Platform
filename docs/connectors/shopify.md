@@ -37,15 +37,22 @@ MCP endpoint is therefore
 set locally as `SHOPIFY_STAGING_STOREFRONT_MCP_URL` in `.env` (gitignored,
 not committed).
 
-**Not yet verified:** whether that endpoint actually responds (i.e. the
-staging store is on Shopify Plus with Storefront MCP enabled). A check from
-this session was blocked by the environment's network egress policy
-(`*.myshopify.com` not in the allowed hosts) — needs either that host
-allowed in the environment's network settings, or a manual check from
-somewhere with access.
+**Checked, endpoint not live yet:** with network access to `*.myshopify.com`
+allowed, the endpoint responds — but with the store's maintenance/password
+page (HTML, storefront-password prompt), not an MCP manifest. Most likely
+cause: the staging store has storefront password protection enabled (common
+for staging so it isn't publicly browsable), and an unauthenticated request
+to `/.well-known/mcp/storefront` gets caught by that gate the same as any
+other page. Untested alternative explanation: the store isn't on Shopify
+Plus, so Storefront MCP isn't enabled at all — needs ruling out too.
 
 ## Open questions
 
+- **Blocking:** does storefront password protection block Storefront MCP's
+  well-known endpoint? If so, is there a supported way to exempt it (Shopify
+  admin setting) or do we need the store's storefront password itself —
+  and if the latter, how does that get supplied to an MCP client without
+  becoming a credential we'd have to manage outside `.env`'s current shape.
 - Confirm the staging store is on Shopify Plus (Storefront MCP default-on
   requirement) — staging tier doesn't always mirror production tier.
 - Confirm our (production) store is on Shopify Plus too, since that's what
