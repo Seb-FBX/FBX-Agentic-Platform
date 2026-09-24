@@ -7,9 +7,9 @@
         "Authorization": "Bearer ${BC_MCP_SALES_RO_TOKEN}"
       }
     },
-    "shopify-storefront": {
+    "shopify-storefront-staging": {
       "type": "http",
-      "url": "${SHOPIFY_STOREFRONT_MCP_URL}"
+      "url": "${SHOPIFY_STAGING_STOREFRONT_MCP_URL}"
     },
     "zendesk": {
       "type": "stdio",

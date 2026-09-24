@@ -13,6 +13,10 @@ a moving one: keep connector scope narrow so it survives the migration.
 - **Read-only before write, one system before the next.** Prove monitoring
   and management on a low-risk connector before granting write scope or
   adding a second connector.
+- **Staging before production, always.** Every connector wires up against a
+  staging/sandbox environment first; moving a connector to production is a
+  separate, explicit decision recorded in that connector's doc, never a
+  side effect of the pilot moving forward.
 - **Reuse before build.** Prefer an existing, maintained MCP server; only
   build custom (Qarma) once the reuse options are genuinely exhausted.
 - **Every connector lands in `docs/connectors/`** with its status kept
@@ -26,14 +30,17 @@ Business Central MCP, Sales, read-only, used for QA. This is the reference
 pattern for every connector that follows.
 
 ### Phase 1 — Second connector, low risk
-Bring up **Shopify Storefront MCP** (read-only, no auth token required on
-Plus stores) as the second data point. Goal: confirm the read-only-first
-pattern generalises to a completely different vendor and auth model before
-touching anything with customer PII or write access.
+Bring up **Shopify Storefront MCP** against the **staging store** (read-only,
+no auth token required on Plus stores) as the second data point. Goal:
+confirm the read-only-first, staging-first pattern generalises to a
+completely different vendor and auth model before touching anything with
+customer PII, write access, or the production store.
 
-Exit criteria: an agent can answer product/catalog questions against live
-Shopify data, and we've documented what monitoring that connection in
-practice actually looks like (logs, rate limits, failure modes).
+Exit criteria: an agent can answer product/catalog questions against
+staging Shopify data, we've documented what monitoring that connection in
+practice actually looks like (logs, rate limits, failure modes), and moving
+to production is recorded as its own explicit follow-on decision rather
+than assumed.
 
 ### Phase 2 — Support surface
 Bring up **Zendesk** (read-only: tickets, Help Center) once an MCP
